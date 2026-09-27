@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DLMM LP Radar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo">◈</span><div><strong>DLMM LP Radar</strong><small>Meteora havuz tarayıcı</small></div></div>
+  <div class="actions"><button id="refreshBtn" class="primary">↻ Verileri yenile</button><button id="demoBtn">Örnek veri</button><button id="settingsBtn">⚙ Ayarlar</button></div>
+</header>
+<main class="wrap">
+<section class="hero">
+  <div><p class="eyebrow">Meteora DLMM</p><h1>Hangi havuz LP için daha anlamlı? İki farklı stratejiyle tara.</h1><p class="muted">Aynı havuzu iki ayrı bakışla değerlendirir: <b>Multiday</b> daha istikrarlı, birkaç gün izlenebilecek havuzları; <b>Yeni / Yüksek Risk</b> ise yeni ve yüksek fee/hacim üreten havuzları arar.</p></div>
+  <div class="status" id="statusBox"><span class="dot"></span><span id="statusText">Hazır</span></div>
+</section>
+<section class="mode-tabs card">
+  <button class="mode active" data-mode="multiday"><span>🟢</span><b>Multiday LP</b><small>İstikrar + sürdürülebilir fee</small></button>
+  <button class="mode" data-mode="newrisk"><span>🟠</span><b>Yeni / Yüksek Risk</b><small>Fee + hacim patlaması</small></button>
+</section>
+<section class="controls card">
+  <div class="control"><label>Horizon</label><select id="window"><option value="2h">2 saat</option><option value="4h">4 saat</option><option value="12h">12 saat</option><option value="24h">24 saat</option></select></div>
+  <div class="control grow"><label>Token / pool ara</label><input id="search" placeholder="ör. SOL, BONK veya pool adresi" /></div>
+  <div class="control"><label>Min. TVL / Active TVL</label><input id="minTvl" type="number" value="10000" min="0" step="1000" /></div>
+  <div class="control"><label>Min. yaş (saat)</label><input id="minAge" type="number" value="6" min="0" step="1" /></div>
+  <div class="control"><label>Fiyat değişimi</label><select id="priceFilter"><option value="all">Hepsi</option><option value="stable">±15% içinde</option><option value="up">Pozitif</option><option value="down">Negatif</option></select></div>
+</section>
+<section class="strategy card" id="strategyInfo"></section>
+<section class="stats" id="summary"></section>
+<section class="table-card card">
+  <div class="table-head"><div><h2>Havuzlar</h2><span id="countText" class="muted"></span><div id="historyStatus" class="history-status">Tarihsel veri bekleniyor…</div></div><div class="legend"><span class="pill green">80+</span> güçlü aday <span class="pill amber">60–79</span> incele <span class="pill red">&lt;60</span> temkinli</div></div>
+  <div class="table-wrap"><table><thead><tr><th>Skor</th><th>Havuz</th><th>Yaş</th><th>MC</th><th>TVL / Active TVL</th><th>Fees</th><th>Fees / Active TVL</th><th>Volume / Active TVL</th><th>Fiyat</th><th>24h Süreklilik</th><th>Sinyal</th></tr></thead><tbody id="poolBody"></tbody></table></div>
+</section>
+<section class="two-col">
+ <article class="card guide"><h2>Skor nasıl çalışıyor?</h2><div id="scoreGuide"></div></article>
+ <article class="card watch"><h2>Önemli uyarılar</h2><ul id="warnings"><li>Veri yüklendiğinde havuz bazlı uyarılar burada görünür.</li></ul></article>
+</section>
+<section class="card manual"><div><h2>Manuel veri / yedek yöntem</h2><p class="muted">Canlı API tarayıcıda engellenirse Meteora JSON verisini yükleyebilirsin. Tarihsel kontrol yalnızca ilk skorlanan 20–30 havuz için yapılır ve cihazında 15 dakika önbelleklenir. Ücretli veri servisi kullanılmaz.</p></div><textarea id="jsonInput" placeholder='{"data":[...]} veya [...]'></textarea><div class="manual-actions"><button id="loadJsonBtn" class="primary">JSON'u yükle</button><button id="copyPromptBtn">Veri şablonunu kopyala</button></div></section>
+<footer>DLMM LP Radar • Sadece okuma/analiz aracı • İşlem gerçekleştirmez • Veri: Meteora DLMM Data API</footer>
+</main>
+<dialog id="settingsDialog"><form method="dialog" class="settings"><div class="dialog-head"><h2>Skor ayarları</h2><button value="cancel" class="icon">×</button></div><p class="muted">Her stratejinin ağırlıkları ayrı tutulur.</p><div class="settings-block"><h3>Multiday</h3><div id="multiWeights"></div></div><div class="settings-block"><h3>Yeni / Yüksek Risk</h3><div id="riskWeights"></div></div><p id="weightTotal" class="weight-total"></p><button id="saveWeights" value="default" class="primary">Uygula</button></form></dialog>
+<script src="app.js"></script>
+</body></html>
